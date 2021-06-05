@@ -1,11 +1,9 @@
 /**
  *  list of single words
  */
-module.exports.words=['jtm', 'ptn', 'con', 'fdp', 'fils de pute', 'pute', 'couillon', 'couillonne', 
-'tg', 'tgl', 'connard', 'connasse', 'salope', 'enculé', 'enculer', 'enculée', 'batard', 'enfoirée', 'enfoiré', 
-'enfoire', 'encule'];
+module.exports.words=['hello, I\'m, you, tonight', 'words', 'that', 'doesn\'t', 'exists', 'in', 'example'];
 
 /**
  * list of expressions (multiple words only)
  */
-module.exports.expressions=['je t\'aime', 'je t’aime', 'je taime', 'ta gueule'];
+module.exports.expressions=['I\'m fine, Something they did not say'];
