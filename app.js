@@ -5,12 +5,13 @@
 const config = require("./config");
 
 //dependencies
-const fix = require("./encodeFix"); // took from (https://github.com/cbsuh/fix_fbjson) to fix facebook wrong encoding
-const {User, Word} = require("./classes");
+const fix = require("./util/encodeFix"); // took from (https://github.com/cbsuh/fix_fbjson) to fix facebook wrong encoding
+const {User, Word} = require("./util/classes");
+const fs = require("fs");
 
 //filters
 const {words, expressions}= require("./filters");
-const badWords = require("./badWords");
+const badWords = require("./util/badWords");
 
 /******** GLOBAL VARIABLES **********/ 
 let data = [];          //final data that will be displayed
@@ -22,11 +23,15 @@ let itemCounter = 0;    //count every item (messages, images, audios)
 
 /******** FOR TEST PURPOSES **********/ 
 let files = [];
-for(let i = 1;i<=config.fileNumber; i++)
-{
-    let f = require(`${config.dataPath}message_${i}.json`)
-    files.push(f);
-}
+fs.readdirSync(config.dataPath).forEach(fileName => {
+    if(fs.lstatSync(config.dataPath+fileName).isFile())
+    {
+        let file = require(`${config.dataPath+fileName}`);
+        files.push(file);
+    }
+});
+    
+
 
 let json = mergeJsons(files);
 /************************************/ 
@@ -91,26 +96,20 @@ function main()
 function addCount(userName, wordName)
 {
     let exists = false;
-    let search = true;
 
     //check if word has already been said by user 
     for(user of data)
     {
         if(user.name == userName)
         {
-            while(exists == false && search == true)
+            for(word of user.words)
             {
-                for(word of user.words)
+                if(word.name == wordName)
                 {
-                    if(word.name == wordName)
-                    {
-                        word.count++;
-                        console.log(`${userName} + ${wordName}`)
-                        exists = true;
-                    }
+                    word.count++;
+                    console.log(`${userName} + ${wordName}`)
+                    exists = true;
                 }
-
-                search = false;
             }
         }
     }
