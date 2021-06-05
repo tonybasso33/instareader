@@ -14,5 +14,7 @@ class Word{
     }
 }
 
-module.exports.User = User;
-module.exports.Word = Word;
+module.exports = {
+    User : User,
+    Word : Word
+}

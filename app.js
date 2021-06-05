@@ -1,32 +1,45 @@
-const fix = require("./encodeFix");
-const fs = require("fs");
-const utf8 = require("utf8");
-const {User, Word} = require("./classes.js");
-const jmerge = require("json-merger")
-const badWords = require("french-badwords-list");
-let data = [];
-let msgCounter = 0;
-let itemCounter = 0;
-let words = ['jtm', 'je t\'aime', 'je t’aime', 'je taime','ptn', 'con', 'fdp', 'fils de pute', 'pute', 'couillon', 'couillonne', , 'tg', 'tgl', 'connard', 'connasse', 'salope', 'enculé', 'enculer', 'enculée',  'ta gueule', 'batard', 'enfoirée', 'enfoiré', 'enfoire', 'encule'];
-let expressions = ['je t\'aime', 'je t’aime', 'je taime', 'ta gueule'];
-//words = words.concat(badWords.array);
 
-//merge multiple files
-let fileNumber = 2;
-let files = []
-for(let i = 1;i<=fileNumber; i++)
+//MADE BY TONY BASSO
+
+//config file
+const config = require("./config");
+
+//dependencies
+const fix = require("./encodeFix"); // took from (https://github.com/cbsuh/fix_fbjson) to fix facebook wrong encoding
+const {User, Word} = require("./classes");
+
+//filters
+const {words, expressions}= require("./filters");
+const badWords = require("./badWords");
+
+/******** GLOBAL VARIABLES **********/ 
+let data = [];          //final data that will be displayed
+let msgCounter = 0;     //count messages
+let itemCounter = 0;    //count every item (messages, images, audios)
+
+//words = words.concat(badWords.array); //array that contains tons of french bad words (https://github.com/darwiin/french-badwords-list)
+
+
+/******** FOR TEST PURPOSES **********/ 
+let files = [];
+for(let i = 1;i<=config.fileNumber; i++)
 {
-    const f = require(`./data/message_${i}.json`)
+    let f = require(`${config.dataPath}message_${i}.json`)
     files.push(f);
 }
 
 let json = mergeJsons(files);
+/************************************/ 
 
 
 main();
+
+
 function main()
 {
     let { messages, participants } = JSON.parse(fix(JSON.stringify(json)));
+
+    //add users
     for (let index of Object.keys(participants)) 
     {
         p = participants[index];
@@ -34,11 +47,14 @@ function main()
         data.push(user);
     }
     
+    //count filters
     for (let index of Object.keys(messages)) 
     {
         m = messages[index];
         if(m.content)
         {
+
+            //count words
             let message = m.content.toLowerCase();
             let mWords = message.split(' ');
             for(mWord of mWords)
@@ -52,6 +68,7 @@ function main()
                 }
             }
 
+            //count expressions
             for(ex of expressions)
                 if(message.includes(ex))
                     addCount(m.sender_name, ex);
@@ -65,11 +82,18 @@ function main()
 }
 
 
-
+/**
+ * adds a count to a word for a user
+ * 
+ * @param {string} userName user concerned
+ * @param {string} wordName word to count 
+ */
 function addCount(userName, wordName)
 {
     let exists = false;
     let search = true;
+
+    //check if word has already been said by user 
     for(user of data)
     {
         if(user.name == userName)
@@ -91,6 +115,7 @@ function addCount(userName, wordName)
         }
     }
 
+    //add word to user list
     if(exists == false)
     {
         let newWord = new Word(wordName, 1);
@@ -105,6 +130,11 @@ function addCount(userName, wordName)
     }
 }
 
+/**
+ * 
+ * displays data in the console 
+ * 
+ */
 function display()
 {
     
@@ -129,18 +159,13 @@ function display()
     console.log(`| Total items: ${itemCounter}\n`);
 }
 
-function makeFile(jsonContent)
-{
-    fs.writeFile("output.json", jsonContent.toString(), 'utf8', function (err) {
-        if (err) {
-            console.log("An error occured while writing JSON Object to File.");
-            return console.log(err);
-        }
-     
-        console.log("JSON file has been saved.");
-    });
-}
-
+/**
+ * 
+ * merge JSON files for future parsing
+ * 
+ * @param {Array} array contains multiple JSON
+ * @returns single JSON
+ */
 function mergeJsons(array)
 {
     let finalJson = {"participants": [], "messages": []};
