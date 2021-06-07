@@ -1,0 +1,23 @@
+{
+  "name": "instareader",
+  "version": "1.0.0",
+  "description": "Reads instagram messages",
+  "main": "app.js",
+  "dependencies": {
+    "utf8": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/tony.basso33/instareader.git"
+  },
+  "author": "Tony Basso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/tony.basso33/instareader/issues"
+  },
+  "homepage": "https://gitlab.com/tony.basso33/instareader#readme"
+}
