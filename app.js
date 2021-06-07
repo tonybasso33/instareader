@@ -15,7 +15,6 @@ const badWords = require("./util/badWords");
 
 /******** GLOBAL VARIABLES **********/ 
 let data = [];          //final data that will be displayed
-let msgCounter = 0;     //count messages
 let itemCounter = 0;    //count every item (messages, images, audios)
 
 //words = words.concat(badWords.array); //array that contains tons of french bad words (https://github.com/darwiin/french-badwords-list)
@@ -48,7 +47,7 @@ function main()
     for (let index of Object.keys(participants)) 
     {
         p = participants[index];
-        let user = new User(p.name, []);
+        let user = new User(p.name, [], 0);
         data.push(user);
     }
     
@@ -78,7 +77,11 @@ function main()
                 if(message.includes(ex))
                     addCount(m.sender_name, ex);
                 
-            msgCounter++;
+            for(user of data)
+            {
+                if(user.name == m.sender_name)
+                    user.total++;
+            }
         }
         itemCounter++;
     }
@@ -127,6 +130,9 @@ function addCount(userName, wordName)
             }
         }
     }
+
+    //add count to total words
+    user.total++;
 }
 
 /**
@@ -136,7 +142,7 @@ function addCount(userName, wordName)
  */
 function display()
 {
-    
+    let totalMessages = 0.
     for(let user of data)
     {
         let total = 0;
@@ -151,10 +157,14 @@ function display()
                 total += word.count;
             }
         }
-        console.log(`\nTotal: ${total}`);
+
+        totalMessages += user.total;
+        console.log(`\nTotal words found: ${total}`);
+        console.log(`Total messages: ${user.total}`);
         console.log("----------------");
     }
-    console.log(`\n| Total messages: ${msgCounter}`);
+
+    console.log(`\n| Total messages: ${totalMessages}`);
     console.log(`| Total items: ${itemCounter}\n`);
 }
 

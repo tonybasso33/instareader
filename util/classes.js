@@ -1,8 +1,9 @@
 class User {
 
-    constructor(name, words){
+    constructor(name, words, total){
         this.name = name;
         this.words = words;
+        this.total = total
     }
 
 }
