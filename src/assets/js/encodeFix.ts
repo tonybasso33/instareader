@@ -1,13 +1,14 @@
-const fs = require('fs')
-const utf8 = require('utf8')
+declare const require: any;
+export const utf8 = require('utf8');
 
-function FixStringValue(value) {
+
+function FixStringValue(value: any) {
     switch (typeof value) {
         case 'string':
             return utf8.decode(value)
         case 'object':
-            var newObject = new Object()
-            for (attr in value) {
+            var newObject = new Object() as any
+            for (let attr in value) {
                 newObject[attr] = FixStringValue(value[attr])
             }
             return newObject
@@ -16,9 +17,9 @@ function FixStringValue(value) {
     }
 }
 
-module.exports = function(json) {
+export default function encodeFix(json : any) {
     let data = json.toString() /* open the file as string */
     let object = JSON.parse(data) /* parse the string to object */
     let fixed = FixStringValue(object)
-    return JSON.stringify(fixed, false, 3) /* use 3 spaces of indentation */
+    return JSON.stringify(fixed) /* use 3 spaces of indentation */
 }
