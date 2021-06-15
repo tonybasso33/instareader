@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { Word } from 'src/app/models/word';
 import * as globals from '../../../globals';
-import { words, expressions } from '../../../assets/js/filters';
+//import { this.words, this.expressions } from '../../../assets/js/filters';
 import fix from '../../../assets/js/encodeFix';
+import { FormsModule } from '@angular/forms';
+import { iif } from 'rxjs';
+
 
 @Component({
   selector: 'app-main',
@@ -17,17 +20,40 @@ export class MainComponent implements OnInit {
     itemCounter = 0;
     jsonFile = [];
     uploaded = false;
+    filtersInput = "";
+    words = [] as string[]; 
+    expressions = [] as string[];
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-
-  doParsing(json: any)
+  getFilters()
   {
-      console.log(json);
-      let { messages, participants } = JSON.parse(fix(JSON.stringify(json)));
+        let filters = this.filtersInput.split(";");
+
+        for(let filter of filters)
+        {
+            let f = filter.split(" ");
+            if(f.length>2)
+                this.expressions.push(filter);
+            else
+                this.words.push(filter);  
+        }
+  }
+
+  getSortedFilters(){
+      let filters = this.words.concat(this.expressions);
+      return filters.sort((a, b) => a.localeCompare(b));
+  }
+
+  doParsing()
+  {
+      this.getFilters()
+      console.log(this.words);
+      let { messages, participants } = JSON.parse(fix(JSON.stringify(this.jsonFile)));
+      
       //add users
       for (let index of Object.keys(participants)) 
       {
@@ -48,7 +74,7 @@ export class MainComponent implements OnInit {
               let mWords = message.split(' ');
               for(let mWord of mWords)
               {
-                  for(let w of words)
+                  for(let w of this.words)
                   {
                       if(mWord == w)
                       {
@@ -58,9 +84,9 @@ export class MainComponent implements OnInit {
               }
   
               //count expressions
-              for(let ex of expressions)
+              for(let ex of this.expressions)
                   if(message.includes(ex))
-                      this.addCount(m.sender_name, ex);
+                        this.addCount(m.sender_name, ex);
                   
               for(let user of this.results)
               {
@@ -71,12 +97,13 @@ export class MainComponent implements OnInit {
           this.itemCounter++;
       }
   
+      this.addZeros();
       this.display();
   }
 
   /**
    * 
-   * displays this.results in the console 
+   * displays results in the console 
    * 
    */
   display()
@@ -98,7 +125,7 @@ export class MainComponent implements OnInit {
           }
 
           totalMessages += user.total;
-          console.log(`\nTotal words found: ${total}`);
+          console.log(`\nTotal this.words found: ${total}`);
           console.log(`Total messages: ${user.total}`);
           console.log("----------------");
       }
@@ -155,7 +182,29 @@ export class MainComponent implements OnInit {
       }
     }
 
-    loadJson(event: any) 
+    addZeros()
+    {
+        for (let user of this.results) 
+        {
+            for(let filter of this.getSortedFilters())
+            {
+                // user.words.array.forEach(word => {
+                //     if(word.name==filter)
+                    
+                // });
+                let check = user.words.find((word: any) => word.name === filter);
+                if( typeof check === 'undefined' )
+                {
+                    console.warn(check);
+                    let w = new Word(filter, 0);
+                    user.words.push(w);
+                }
+
+            }
+        }
+    } 
+
+    setJson(event: any) 
     {
         this.jsonFile = [];
         let jsonFile = event.target.files[0];
@@ -163,9 +212,7 @@ export class MainComponent implements OnInit {
         fileReader.readAsText(jsonFile, "UTF-8");
         fileReader.onload = () => {
             console.log(jsonFile);
-            this.jsonFile = jsonFile;
-            this.doParsing(JSON.parse(fileReader.result as any));
-            console.log(JSON.parse(fileReader.result as any));
+            this.jsonFile = JSON.parse(fileReader.result as any);
         }
         fileReader.onerror = (error) => {
             console.log(error);

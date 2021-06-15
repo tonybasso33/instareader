@@ -12,4 +12,8 @@ export class User {
         this.totalMessages = totalMessages;
     }
 
+    getSortedWords(){
+        return this.words.sort((a, b) => a.name.localeCompare(b.name))
+    }
+
 }

@@ -1,38 +1,60 @@
+$bgColor: #fff1ea;
+$cardColor: white;
+$cardColor3: #ffd3c0;
+$cardColor2: #ffc0d2;
+
+$purple: #390a75;
+$lightpurple: #967bb5;
+
 .entries{
-    input[type=text]{
-        height: 60px;
-        margin-top: 2px;
-        font-size: 24px;
-    }
+    box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
+    color: black;
+
 
     .upload{
-        background-color: lightgreen;
+        background-color: $cardColor;
         border-radius: 40px;
         padding: 40px;
-        .form{
-        }
     }
     
     .filters{
-        background-color: lightpink;
+        background-color: $cardColor;
         border-radius: 40px;
         margin-top: 10px;
         padding: 40px;
-        
-        
+    }
+
+    .btn{
+        margin-top:  40px;
+        background-color: black;
+        color: white;
+        border-radius: 50px;
+        padding: 10px;
+        padding-left: 150px;
+        padding-right: 150px;
+
+        font-size: 24px;
     }
 }
 
-
 .results{
+    .word{
+        font-weight:bold;
+    }
     .userTitle{
         background-color: lightcoral;
         border-radius: 20px;
         padding: 10px;
+        box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
     }
 
-    .userFilters{
-        background-color: beige;
+    .wordCounting{
+        background-color: white;
+        box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
         border-radius: 20px;
+    }
+
+    .counter{
+        
     }
 }
