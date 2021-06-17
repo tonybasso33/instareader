@@ -1,13 +1,35 @@
 .header{
     background-color: rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    min-height: 11vh;
+    height: 100px;
 
     h1{
         display: inline;
     }
     
+    .display-1{
+        margin: 0;
+        font-weight: 300;
+    }
+
     .lead{
         font-size: 16px;
+        font-weight: 300;
+        margin-bottom: 15px;
+    }
+
+    img{
+        width: 30px;
+        float:left;
+        margin-right:10px;
+        transition: 0.1s;
+        margin-left: 5px;
+        margin-bottom: 15px;
+
+    }
+
+    img:hover{
+        transform:scale(1.2);
+        cursor: pointer;
     }
 }

@@ -17,24 +17,22 @@ $lightpurple: #967bb5;
         .entries{
 
             color: black;
-    
-    
-            .upload{
-                background-color: $cardColor;
-                border-radius: 30px;
-                padding: 25px;
-                box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
-    
+            .info{
+
             }
+
             
-            .filters{
+            .panel{
+                .display-2{
+                    color: #212529;
+                }
+
+                margin-top: 20px;
+                padding: 25px;
+
                 background-color: $cardColor;
                 border-radius: 30px;
-                margin-top: 10px;
-                padding: 25px;
-                box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
-    
-            }
+                box-shadow: 0 5px 10px rgba(73, 73, 73, 0.05), 0 15px 40px rgba(122, 122, 122, 0.2);            }
     
             .btn{
                 margin-top:  40px;
@@ -46,6 +44,11 @@ $lightpurple: #967bb5;
                 padding-right: 150px;
     
                 font-size: 24px;
+                transition: 0.1s;
+
+                &:hover{
+                    transform: scale(1.05);
+                }
             }
         }
     
