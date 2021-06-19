@@ -1,0 +1,26 @@
+{
+    "french": {
+      "header_author": "PAR TONY BASSO",
+      "entries_1_text": "Téléchargez vos données personnelles depuis",
+      "entries_2_text": "Choisissez votre fichier",
+      "entries_2_help": "Exemple: messages/inbox/name_xxxxxx/message_1.json",
+      "entries_3_text": "Écrivez les mots ou expressions que vous voulez filtrer",
+      "entries_3_help": "Les mots ou expressions doivent être séparés par un point virgule",
+      "entries_3_placeholder": "Une expression d'exemple;mot;encore;des;mots:etc...",
+      "button_go": "GO",
+      "results_title": "Résultats",
+      "results_filters": "Filtres"
+    },
+    "english": {
+      "header_author": "BY TONY BASSO",
+      "entries_1_text": "Download you personal data from",
+      "entries_2_text": "Choose your file",
+      "entries_2_help": "Example: messages/inbox/name_xxxxxx/message_1.json",
+      "entries_3_text": "Write down words or expressions you want to filter",
+      "entries_3_help": "Words or expressions must be separated with a semicolon",
+      "entries_3_placeholder": "An expression as example;a;word;and;another;word;etc...",
+      "button_go": "GO",
+      "results_title": "Results",
+      "results_filters": "Filters"
+    }
+  }

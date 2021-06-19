@@ -20,13 +20,18 @@
 
     img{
         width: 30px;
+        transition: 0.1s;
+
+    }
+
+    .gitlab{
         float:left;
         margin-right:10px;
-        transition: 0.1s;
         margin-left: 5px;
         margin-bottom: 15px;
 
     }
+
 
     img:hover{
         transform:scale(1.2);

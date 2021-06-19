@@ -14,7 +14,7 @@
                                         <h2 class="display-2">1.</h2>
                                     </div>
                                     <div class="col-6 justify-content-center align-self-center lead">
-                                        <p>Get your files from <a href="https://www.instagram.com/download/request/">Instagram</a></p>
+                                        <p>{{text["entries_1_text"]}} <a href="https://www.instagram.com/download/request/" target="_blank">Instagram</a></p>
                                     </div>
                                 </div>
                             </div>
@@ -28,9 +28,12 @@
                                     </div>
                                     <div class="col-6 justify-content-center">
                                         <div class="form-group">
-                                            <label class="labelFor lead" for="upload">Choose your file</label>
+                                            <label class="labelFor lead" for="upload">{{text["entries_2_text"]}}</label>
                                             <input type="file" class="form-control my-1" id="upload"
                                                 (change)="setJson($event)">
+                                            <small class="form-text text-muted">
+                                                {{text["entries_2_help"]}}
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -46,9 +49,9 @@
 
                                     <div class="col-6 justify-content-center">
                                         <div class="form-group">
-                                            <label class="labelFor lead" for="filter">Choose your filters</label>
+                                            <label class="labelFor lead" for="filter">{{text["entries_3_text"]}}</label>
                                             <input type="text" class="form-control" id="filter"
-                                                [(ngModel)]="filtersInput" placeholder="A word, another, word, etc...">
+                                                [(ngModel)]="filtersInput" placeholder="{{text['entries_3_placeholder']}}">
                                         </div>
                                     </div>
                                 </div>
@@ -57,59 +60,7 @@
 
                         <div class="row">
                             <div class="col text-center">
-                                <button class="btn" (click)="doParsing()">GO</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="results" *ngIf="uploaded==true">
-            <div class="container">
-                <div class="row" >
-                    <div class="col justify-content-center text-center">
-                        <h1>Results</h1>
-                        <div class="row">
-                            <div class="col-2">
-                                <div class="row">
-                                    <div class="col">
-                                        <div class="userTitle">
-                                            <h2>Words</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row" class="wordCounting">
-                                    <div class="col">
-                                        <div class="row" *ngFor="let word of getSortedFilters()">
-                                            <hr />
-                                            <div class="col">
-                                                <div class="word">
-                                                    <p>{{word}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col" *ngFor="let user of results">
-                                <div class="row justify-content-center">
-                                    <div class="col-12">
-                                        <div class="userTitle">
-                                            <h2>{{user.name}}</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row justify-content-center wordCounting">
-                                    <div class="col-10 no-gutters">
-                                        <div class="row" *ngFor="let word of user.getSortedWords()">
-                                            <hr />
-                                            <div class="col">
-                                                <p>
-                                                    {{word.count}}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button class="btn" (click)="doParsing()">{{text["button_go"]}}</button>
                             </div>
                         </div>
                     </div>
@@ -117,4 +68,39 @@
             </div>
         </div>
     </div>
+        
+        
+            
+                <div class="results" id="results">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h1 class="display-2">{{text["results_title"]}}</h1>
+                            </div>
+                        </div>
+                        <div class="row results-container">
+                            <div class="col-3 words">
+                                <div class="row header align-items-center"><div class="col text-center"><h1>{{text["results_filters"]}}</h1></div></div>
+                                <div class="row line text-center align-items-center" *ngFor="let filter of sortFiltersArray(filters)">
+                                    <hr *ngIf="filter != sortFiltersArray(filters)[0]">
+                                    <div class="col">
+                                        {{filter}}
+                                    </div>
+                                </div>
+                                <div class="row footer"> </div>
+
+                            </div>
+                            <div class="col counts" *ngFor="let user of results">
+                                <div class="row header text-center"><div class="col"><h1>{{user.name}}</h1></div></div>
+                                <div class="row counts line text-center align-items-center"  *ngFor="let word of sortFiltersObject(user.words)">
+                                    <hr *ngIf="word != sortFiltersObject(user.words)[0]">
+                                    <div class="col">
+                                        {{word.count}}
+                                    </div>
+                                </div>
+                                <div class="row footer"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 </div>

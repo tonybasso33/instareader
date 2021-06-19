@@ -1,25 +1,36 @@
 <div class="header">
     <div class="container h-100">
 
-        <div class="row h-100 align-items-end g-0">
+        <div class="row h-100 g-0">
 
 
-            <div class="col-12 col-sm-auto">
+            <div class="col-12 col-sm-auto align-self-end">
                 <label class="display-1">InstaReader</label>
             </div>
 
 
-            <div class="col-auto">
-                <label class="lead">BY TONY BASSO</label>
+            <div class="col-auto align-self-end">
+                <label class="lead">{{text["header_author"]}}</label>
             </div>
             
             
-            <div class="col-auto">
-                <a href="https://gitlab.com/tony.basso33/instareader">
-                    <img src="/assets/img/gitlab.svg" alt="gitlab icon">
+            <div class="col-auto align-self-end">
+                <a href="https://gitlab.com/tony.basso33/instareader" target="_blank">
+                    <img class="gitlab" src="/assets/img/gitlab.svg" alt="gitlab icon">
                 </a>
+            </div>
+            <div class="col my-auto">
+                <div class="row">
+                    <div class="col text-end">
+                        <img class="lang" src="/assets/img/fr.svg" alt="french icon" (click)="setLanguage('french')">
+                    </div>
+                </div>
 
-
+                <div class="row">
+                    <div class="col text-end">
+                        <img class="lang" src="/assets/img/en.svg" alt="english icon" (click)="setLanguage('english')">
+                    </div>
+                </div>
             </div>
         </div>
 

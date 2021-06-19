@@ -6,14 +6,17 @@ $cardColor2: #ffc0d2;
 $purple: #390a75;
 $lightpurple: #967bb5;
 
+$filtersBgColor: rgb(233, 233, 233);
+$headerColor: #a59dec;
 
 .main{
-    background: #9796f0;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to top, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to top, #fbc7d4, #9796f0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     
-    min-height: 100vh;
     .front{
+        background: #9796f0;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to top, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to top, #fbc7d4, #9796f0); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        min-height: 100vh;
+
         .entries{
 
             color: black;
@@ -55,28 +58,71 @@ $lightpurple: #967bb5;
     }
     
     .results{
-        
-        background-color: whitesmoke;
+        display: none;
+        padding-top: 30px;
         min-height: 100vh;
+        font-size: 16px;
 
-        .word{
-            font-weight:bold;
-        }
-        .userTitle{
-            background-color: lightcoral;
-            border-radius: 20px;
-            padding: 10px;
-            box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
+        .results-container{
+            border-radius: 30px;
+            box-shadow: 0 5px 10px rgba(73, 73, 73, 0.05), 0 15px 40px rgba(122, 122, 122, 0.2);
         }
 
-        .wordCounting{
-            background-color: white;
-            box-shadow: 0 7px 30px -10px rgba(150,170,180,0.5);
-            border-radius: 20px;
+        .header{
+            background-color: $headerColor;
+            padding-top:20px;
+            padding-bottom:20px;
         }
 
-        .counter{
-            
+        .footer{
+            background-color: $filtersBgColor;
+            padding-top:20px;
+            padding-bottom:20px;
         }
+
+        .line{
+            background-color: whitesmoke;
+            min-height: 50px;
+        }
+        .words{
+
+            .line{
+                background-color: $filtersBgColor;
+            }
+
+            .header{
+                border-top-left-radius: 30px;
+
+            }
+
+            .footer{
+                border-bottom-left-radius: 30px;
+
+            }
+
+        }
+
+        
+
+        .counts{
+            font-weight: bold;
+
+            &:last-child{
+                .header{
+                    border-top-right-radius: 30px;
+                }
+
+                .footer{
+                    border-bottom-right-radius: 30px;
+
+                }
+            }
+        }
+
+        hr {
+            border-top: thin solid black;
+            margin: 0;
+            padding: 0;
+        }       
     }
 }
