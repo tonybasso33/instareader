@@ -15,7 +15,6 @@ export class MainComponent implements OnInit, OnDestroy {
     text = [] as any;
     subscription: any;
 
-    dataPath = globals.dataPath;
     results = [] as any;
     
     uploaded = false;
@@ -48,12 +47,14 @@ export class MainComponent implements OnInit, OnDestroy {
           });
     }
 
-    getFilters() {
+    setFilters() {
         let fInput = this.filtersInput.toLowerCase().split(";");
 
         for (let filter of fInput) {
             let f = filter.split(" ");
-                if (f.length > 2) 
+            f = f.filter(function (e: any) { return e != "";});
+
+                if (f.length > 1) 
                 {
                     if(!this.expressions.includes(filter))
                     {
@@ -63,6 +64,10 @@ export class MainComponent implements OnInit, OnDestroy {
                 }
                 else
                 {
+                    filter = f[0];
+                    if(filter.charAt(0) == " ")
+                        filter = filter.slice(0, 0); //remove space if present
+
                     if(!this.words.includes(filter))
                     {
                         this.filters.push(filter);
@@ -88,18 +93,17 @@ export class MainComponent implements OnInit, OnDestroy {
     reset()
     {
         this.results = [];
+        this.filters = [];
         this.words = [];
         this.expressions = [];
         this.itemCounter = 0;
         this.uploaded = false;
         document.getElementById("results")!.style.display = 'none';
-    
     }
 
     doParsing() {
         this.reset();
-        this.getFilters()
-        console.log(this.words);
+        this.setFilters()
         let { messages, participants } = JSON.parse(fix(JSON.stringify(this.jsonFile)));
 
         //add users
@@ -117,8 +121,11 @@ export class MainComponent implements OnInit, OnDestroy {
                 //count words
                 let message = m.content.toLowerCase();
                 let mWords = message.split(' ');
-                for (let mWord of mWords) {
-                    for (let w of this.words) {
+                mWords = mWords.filter(function (e: any) { return e != "";});
+
+
+                for (let w of this.words) {
+                    for (let mWord of mWords) {
                         if (mWord == w) {
                             this.addCount(m.sender_name, w);
                         }
@@ -127,9 +134,11 @@ export class MainComponent implements OnInit, OnDestroy {
 
                 //count expressions
                 for (let ex of this.expressions)
+                {
                     if (message.includes(ex))
-                        this.addCount(m.sender_name, ex);
-
+                       this.addCount(m.sender_name, ex);
+                }
+                    
                 for (let user of this.results) {
                     if (user.name == m.sender_name)
                         user.total++;
@@ -222,10 +231,9 @@ export class MainComponent implements OnInit, OnDestroy {
 
     addZeros() {
         for (let user of this.results) {
-            for (let filter of this.sortFiltersArray(this.filters)) {
-                let check = user.words.find((word: any) => word.name === filter);
+            for (let filter of this.filters) {
+                let check = user.words.find((word: Word) => word.name === filter);
                 if (typeof check === 'undefined') {
-                    console.warn(check);
                     let w = new Word(filter, 0);
                     user.words.push(w);
                 }
