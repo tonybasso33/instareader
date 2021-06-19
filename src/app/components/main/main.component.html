@@ -9,8 +9,8 @@
 
                         <div class="row justify-content-center">
                             <div class="col ">
-                                <div class="d-flex  panel info">
-                                    <div class="col-3 text-center">
+                                <div class="d-flex panel info">
+                                    <div class="col-3 my-auto text-center">
                                         <h2 class="display-2">1.</h2>
                                     </div>
                                     <div class="col-9 justify-content-center align-self-center lead">
@@ -23,7 +23,7 @@
                         <div class="row">
                             <div class="col">
                                 <div class="d-flex panel upload">
-                                    <div class="col-3 text-center">
+                                    <div class="col-3 my-auto text-center">
                                         <h2 class="display-2">2.</h2>
                                     </div>
                                     <div class="col-7 justify-content-center">
@@ -31,7 +31,7 @@
                                             <label class="labelFor lead" for="upload">{{text["entries_2_text"]}}</label>
                                             <input type="file" class="form-control my-1" id="upload" multiple  (change)="setJson($event)">
                                             
-                                            <small class="form-text text-muted">
+                                            <small class="form-text text-muted text-break">
                                                 {{text["entries_2_help"]}}
                                             </small>
                                         </div>
@@ -43,7 +43,7 @@
                         <div class="row justify-content-end">
                             <div class="col">
                                 <div class="d-flex panel filters">
-                                    <div class="col-3 text-center">
+                                    <div class="col-3 my-auto text-center">
                                         <h2 class="display-2">3.</h2>
                                     </div>
 
@@ -51,8 +51,8 @@
                                         <div class="form-group">
                                             <label class="labelFor lead" for="filter">{{text["entries_3_text"]}}</label>
                                             <input type="text" class="form-control" id="filter"
-                                                [(ngModel)]="filtersInput" placeholder="{{text['entries_3_placeholder']}}"  >
-                                            <small class="form-text text-muted">
+                                                [(ngModel)]="filtersInput" placeholder="{{text['entries_3_placeholder']}}">
+                                            <small class="form-text text-muted text-break">
                                                 {{text["entries_3_help"]}}
                                             </small>
                                         </div>
