@@ -30,11 +30,10 @@ export class MainComponent implements OnInit, OnDestroy {
     itemCounter = 0;
 
     constructor(private language: TranslationService) {
-            this.setLanguage(globals.defaultLanguage);
      }
 
     ngOnInit(): void {
-        this.setLanguage(globals.defaultLanguage);
+        this.setLanguage(globals.language);
     }
 
     ngOnDestroy(): void {
@@ -43,6 +42,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     setLanguage(lang: string)
     {
+        this.language.setLanguage(lang);
         this.subscription = this.language.getTexts(lang).subscribe(newText => {
               this.text = newText;
           });
@@ -98,14 +98,13 @@ export class MainComponent implements OnInit, OnDestroy {
         this.words = [];
         this.expressions = [];
         this.itemCounter = 0;
-        this.uploaded = false;
         document.getElementById("results")!.style.display = 'none';
     }
 
     doParsing() {
+        this.reset();
+        console.log("> Starting parsing...");
         this.setFilters()
-        console.warn(this.finalJson);
-        console.error(this.jsonFiles);
         let { messages, participants } = JSON.parse(fix(JSON.stringify(this.finalJson)));
 
         //add users
@@ -184,6 +183,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
         document.getElementById("results")!.style.display = 'block';
         this.scrollToResults();
+
     }
 
     scrollToResults() {
@@ -271,13 +271,9 @@ export class MainComponent implements OnInit, OnDestroy {
     {
         this.finalJson = {"participants": [], "messages": []} as any;
 
-        console.error(this.jsonFiles)
-        console.warn(this.jsonFiles[0])
         for(let i=0; i<this.jsonFiles.length;i++) 
         {
             let json = this.jsonFiles[i] as any;
-            console.log("xd")
-            console.log(json)
             ///add participants
             for(let p of json.participants)
             {

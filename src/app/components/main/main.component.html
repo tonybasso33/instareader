@@ -29,8 +29,8 @@
                                     <div class="col-7 justify-content-center">
                                         <div class="form-group">
                                             <label class="labelFor lead" for="upload">{{text["entries_2_text"]}}</label>
-                                            <input type="file" class="form-control my-1" id="upload" multiple
-                                                (change)="setJson($event)">
+                                            <input type="file" class="form-control my-1" id="upload" multiple  (change)="setJson($event)">
+                                            
                                             <small class="form-text text-muted">
                                                 {{text["entries_2_help"]}}
                                             </small>
@@ -51,7 +51,10 @@
                                         <div class="form-group">
                                             <label class="labelFor lead" for="filter">{{text["entries_3_text"]}}</label>
                                             <input type="text" class="form-control" id="filter"
-                                                [(ngModel)]="filtersInput" placeholder="{{text['entries_3_placeholder']}}">
+                                                [(ngModel)]="filtersInput" placeholder="{{text['entries_3_placeholder']}}"  >
+                                            <small class="form-text text-muted">
+                                                {{text["entries_3_help"]}}
+                                            </small>
                                         </div>
                                     </div>
                                 </div>

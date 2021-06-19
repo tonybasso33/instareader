@@ -14,7 +14,8 @@ export class FooterComponent implements OnInit, OnDestroy {
 
 
     constructor(private language: TranslationService) {
-        this.setLanguage(globals.defaultLanguage);
+        this.setLanguage(globals.language);
+
     }
 
   ngOnInit(): void {
@@ -25,6 +26,7 @@ export class FooterComponent implements OnInit, OnDestroy {
 }
 
   setLanguage(lang: string) {
+    this.language.setLanguage(lang);
     this.subscription = this.language.getTexts(lang).subscribe(newText => {
         this.text = newText;
     });

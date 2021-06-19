@@ -13,10 +13,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
     subscription: any;
 
     constructor(private language: TranslationService) {
-        this.setLanguage(globals.defaultLanguage);
+        this.language.setLanguage(globals.language);
+        this.subscription = this.language.getTexts(globals.language).subscribe(newText => {
+            this.text = newText;
+        });
+        
     }
 
     ngOnInit(): void {
+        this.setLanguage(globals.language);
     }
 
     ngOnDestroy(): void {
@@ -24,9 +29,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
     
     setLanguage(lang: string) {
+        this.language.setLanguage(lang);
         this.subscription = this.language.getTexts(lang).subscribe(newText => {
             this.text = newText;
         });
+
+        let l = document.querySelectorAll(".active") as any;
+        for(let e of l)
+        {
+            e.classList.remove('active');
+        }
+        document.querySelector("#"+lang)!.classList.add("active");
     }
 
 }

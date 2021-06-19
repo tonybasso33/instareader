@@ -8,8 +8,19 @@ import language from '../../assets/language.json';
 export class TranslationService {
 
     private textSubject = new Subject<any>();
+    private language = "english";
 
   constructor() { 
+  }
+
+  setLanguage(lang: string)
+  {
+      this.language = lang;
+  }
+
+  getLanguage()
+  {
+      return this.language;
   }
 
   setText(lang:string){
