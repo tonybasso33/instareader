@@ -18,7 +18,7 @@ export class MainComponent implements OnInit, OnDestroy {
     subscription: any;
 
     dataPath = globals.dataPath;
-    results = globals.results as any;
+    results = [] as any;
     
     uploaded = false;
     jsonFile = [];
@@ -73,7 +73,19 @@ export class MainComponent implements OnInit, OnDestroy {
         return filters.sort((a: any, b: any) => a.localeCompare(b));
     }
 
+    reset()
+    {
+        this.results = [];
+        this.words = [];
+        this.expressions = [];
+        this.itemCounter = 0;
+        this.uploaded = false;
+        document.getElementById("results")!.style.display = 'none';
+    
+    }
+
     doParsing() {
+        this.reset();
         this.getFilters()
         console.log(this.words);
         let { messages, participants } = JSON.parse(fix(JSON.stringify(this.jsonFile)));
@@ -216,7 +228,8 @@ export class MainComponent implements OnInit, OnDestroy {
         const fileReader = new FileReader();
         fileReader.readAsText(jsonFile, "UTF-8");
         fileReader.onload = () => {
-            console.log(jsonFile);
+            this.jsonFile = [];
+            this.reset();
             this.jsonFile = JSON.parse(fileReader.result as any);
         }
         fileReader.onerror = (error) => {
