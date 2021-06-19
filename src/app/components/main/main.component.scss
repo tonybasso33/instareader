@@ -9,8 +9,25 @@ $lightpurple: #967bb5;
 $filtersBgColor: rgb(233, 233, 233);
 $headerColor: #a59dec;
 
+$baseFontSize: 16px;
+
+$n1:#ada0e1;
+$n2:#c3abdd;
+$n3:#d9b6da;
+
+
+$xs: 0;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+
+
 .main{
     
+    font-size: $baseFontSize;
+
     .front{
         background: #9796f0;  /* fallback for old browsers */
         background: -webkit-linear-gradient(to top, #fbc7d4, #9796f0);  /* Chrome 10-25, Safari 5.1-6 */
@@ -19,6 +36,14 @@ $headerColor: #a59dec;
         padding-bottom:  40px;
 
         .entries{
+
+            label{
+                font-size: 1rem;
+            }
+
+            small{
+                font-size: 0.8rem;
+            }
 
             a{
                 transition: 0.1s;
@@ -31,8 +56,29 @@ $headerColor: #a59dec;
             color: black;
             
             .panel{
+                .n1{
+                    color: $headerColor;
+                }
+
+                .n2{
+                    color: $lightpurple;
+
+                }
+
+                .n3{
+                    color: $cardColor2;
+
+                }                    
+                .display-1{
+                    font-weight: 300;
+                    padding-right: 30px;
+                    margin:0;
+                }
+
                 .display-2{
                     color: #212529;
+
+                    font-size: calc(1vw + 3rem);
                 }
 
                 margin-top: 20px;
@@ -52,7 +98,7 @@ $headerColor: #a59dec;
                 padding-left: 150px;
                 padding-right: 150px;
     
-                font-size: 24px;
+                font-size: 1.5rem;
                 transition: 0.1s;
 
                 &:hover{
@@ -65,13 +111,13 @@ $headerColor: #a59dec;
     
     .results{
         display: none;
-        
+        overflow:hidden;
         background-color: #f1dfd1;
         background-image: linear-gradient(315deg, #f1dfd1 0%, #f6f0ea 74%);       
         padding-top: 30px;
         min-height: 100vh;
         padding-bottom: 80px;
-        font-size: 16px;
+
 
         .results-container{
             border-radius: 30px;
@@ -79,9 +125,18 @@ $headerColor: #a59dec;
         }
 
         .header{
+            
+            font-size: 2rem;
             background-color: $headerColor;
             padding-top:20px;
             padding-bottom:20px;
+            @media (max-width: $md) { 
+                h1{
+                    font-size: 1.2rem;
+
+                }
+            }
+
         }
 
         .footer{
@@ -91,42 +146,46 @@ $headerColor: #a59dec;
         }
 
         .line{
+            font-size: 1.2rem;
             background-color: whitesmoke;
             min-height: 50px;
             border-left: 1px solid rgb(228, 228, 228);
         }
 
         .words{
+            font-weight: bold;
 
             .line{
                 background-color: $filtersBgColor;
             }
+            @media (min-width: $md) { 
 
-            .header{
-                border-top-left-radius: 30px;
+                .header{
+                    border-top-left-radius: 30px;
 
+                }
+
+                .footer{
+                    border-bottom-left-radius: 30px;
+
+                }
             }
-
-            .footer{
-                border-bottom-left-radius: 30px;
-
-            }
-
         }
 
         
 
         .counts{
-            font-weight: bold;
 
-            &:last-child{
-                .header{
-                    border-top-right-radius: 30px;
-                }
+            @media (min-width: $md) { 
+                &:last-child{
+                    .header{
+                        border-top-right-radius: 30px;
+                    }
 
-                .footer{
-                    border-bottom-right-radius: 30px;
+                    .footer{
+                        border-bottom-right-radius: 30px;
 
+                    }
                 }
             }
         }

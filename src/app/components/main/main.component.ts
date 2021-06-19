@@ -4,6 +4,8 @@ import { Word } from 'src/app/models/word';
 import * as globals from '../../../globals';
 import fix from '../../../assets/js/encodeFix';
 import { TranslationService } from '../../services/translation.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
+
 
 @Component({
     selector: 'app-main',
@@ -11,6 +13,12 @@ import { TranslationService } from '../../services/translation.service';
     styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, OnDestroy {
+
+    isMobile = false;
+    
+    alertTimeout = 0 as any;
+    displayAlert = false;
+    alerts = "";
 
     text = [] as any;
     subscription: any;
@@ -29,11 +37,12 @@ export class MainComponent implements OnInit, OnDestroy {
     
     itemCounter = 0;
 
-    constructor(private language: TranslationService) {
+    constructor(private language: TranslationService, private deviceService: DeviceDetectorService) {
+        this.isMobile = this.deviceService.isMobile();
+        this.setLanguage(globals.language);
      }
 
     ngOnInit(): void {
-        this.setLanguage(globals.language);
     }
 
     ngOnDestroy(): void {
@@ -45,37 +54,44 @@ export class MainComponent implements OnInit, OnDestroy {
         this.language.setLanguage(lang);
         this.subscription = this.language.getTexts(lang).subscribe(newText => {
               this.text = newText;
+              this.alerts = this.text["alert_json"];
           });
     }
 
     setFilters() {
-        let fInput = this.filtersInput.toLowerCase().split(";");
+        try{
 
-        for (let filter of fInput) {
-            let f = filter.split(" ");
-            f = f.filter(function (e: any) { return e != "";});
+            let fInput = this.filtersInput.toLowerCase().split(";");
 
-                if (f.length > 1) 
-                {
-                    if(!this.expressions.includes(filter))
+            for (let filter of fInput) {
+                let f = filter.split(" ");
+                f = f.filter(function (e: any) { return e != "";});
+
+                    if (f.length > 1) 
                     {
-                        this.expressions.push(filter);
-                        this.filters.push(filter);
+                        if(!this.expressions.includes(filter))
+                        {
+                            this.expressions.push(filter);
+                            this.filters.push(filter);
+                        }
                     }
-                }
-                else
-                {
-                    filter = f[0];
-                    if(filter.charAt(0) == " ")
-                        filter = filter.slice(0, 0); //remove space if present
-
-                    if(!this.words.includes(filter))
+                    else
                     {
-                        this.filters.push(filter);
-                        this.words.push(filter);
-                    }
-                }
+                        filter = f[0];
+                        if(filter.charAt(0) == " ")
+                            filter = filter.slice(0, 0); //remove space if present
 
+                        if(!this.words.includes(filter))
+                        {
+                            this.filters.push(filter);
+                            this.words.push(filter);
+                        }
+                    }
+
+            }
+        }catch(e)
+        {
+            this.displayAlertMessage(this.text["alert_filters"]);
         }
     }
 
@@ -93,6 +109,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     reset()
     {
+        this.displayAlert = false;
         this.results = [];
         this.filters = [];
         this.words = [];
@@ -101,57 +118,97 @@ export class MainComponent implements OnInit, OnDestroy {
         document.getElementById("results")!.style.display = 'none';
     }
 
-    doParsing() {
+    doParsing() 
+    {
         this.reset();
-        console.log("> Starting parsing...");
         this.setFilters()
-        let { messages, participants } = JSON.parse(fix(JSON.stringify(this.finalJson)));
+        if(this.jsonFiles.length > 0 && this.filters.length > 0)
+        {
+            console.log("> Starting parsing...");
+            let { messages, participants } = JSON.parse(fix(JSON.stringify(this.finalJson)));
 
-        //add users
-        for (let index of Object.keys(participants)) {
-            let p = participants[index];
-            let user = new User(p.name, [], 0);
-            this.results.push(user);
-        }
+            //add users
+            for (let index of Object.keys(participants)) {
+                let p = participants[index];
+                let user = new User(p.name, [], 0);
+                this.results.push(user);
+            }
 
-        //count filters
-        for (let index of Object.keys(messages)) {
-            let m = messages[index];
-            if (m.content) {
+            //count filters
+            for (let index of Object.keys(messages)) {
+                let m = messages[index];
+                if (m.content) {
 
-                //count words
-                let message = m.content.toLowerCase();
-                let mWords = message.split(' ');
-                mWords = mWords.filter(function (e: any) { return e != "";});
+                    //count words
+                    let message = m.content.toLowerCase();
+                    let mWords = message.split(' ');
+                    mWords = mWords.filter(function (e: any) { return e != "";});
 
 
-                for (let w of this.words) {
-                    for (let mWord of mWords) {
-                        if (mWord == w) {
-                            this.addCount(m.sender_name, w);
+                    for (let w of this.words) {
+                        for (let mWord of mWords) {
+                            if (mWord == w) {
+                                this.addCount(m.sender_name, w);
+                            }
                         }
                     }
-                }
 
-                //count expressions
-                for (let ex of this.expressions)
-                {
-                    if (message.includes(ex))
-                       this.addCount(m.sender_name, ex);
+                    //count expressions
+                    for (let ex of this.expressions)
+                    {
+                        if (message.includes(ex))
+                        this.addCount(m.sender_name, ex);
+                    }
+                        
+                    for (let user of this.results) {
+                        if (user.name == m.sender_name)
+                            user.total++;
+                    }
                 }
-                    
-                for (let user of this.results) {
-                    if (user.name == m.sender_name)
-                        user.total++;
-                }
+                this.itemCounter++;
             }
-            this.itemCounter++;
-        }
 
-        this.addZeros();
-        this.display();
+            this.addZeros();
+            this.display();
+            
+        }
+        else if(this.filters.length < 1)
+        {
+            this.displayAlertMessage(this.text["alert_filters"]);
+        }
+        else
+        {
+            this.displayAlertMessage(this.text["alert_json"]);
+        }
     }
 
+    hideWarningMessage()
+    {
+        this.isMobile = false;
+    }
+
+    hideAlertMessage()
+    {
+        if(this.alertTimeout)
+        {
+            clearTimeout(this.alertTimeout);
+            this.alertTimeout = null;
+        }
+        this.displayAlert = false;
+
+    }
+
+    displayAlertMessage(message: string)
+    {
+        this.alerts = message;
+        this.displayAlert = true;
+        if(this.alertTimeout)
+        {
+            clearTimeout(this.alertTimeout);
+            this.alertTimeout = null;
+        }
+        this.alertTimeout = setTimeout(()=>{ this.displayAlert = false }, 10000)
+    }
     /**
      * 
      * displays results in the console 
@@ -189,7 +246,6 @@ export class MainComponent implements OnInit, OnDestroy {
     scrollToResults() {
         let e = document.getElementById("results")!;
         e.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-
     }
 
 
@@ -245,26 +301,36 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     setJson(event: any) {
-        this.jsonFiles = [];
-        this.reset();
-        let files = event.target.files;
-        
-        let promises = [];
-        for (let file of files) {
-            let filePromise = new Promise(resolve => {
-                let reader = new FileReader();
-                reader.readAsText(file);
-                reader.onload = () => resolve(reader.result);
-            });
-            promises.push(filePromise);
-        }
-        Promise.all(promises).then((contents) => {
-            for(let c of contents)
-            {
-                this.jsonFiles.push(JSON.parse(c as any))
+        try
+        {        
+            this.jsonFiles = [];
+            this.reset();
+            let files = event.target.files;
+            
+            let promises = [];
+            for (let file of files) {
+                let filePromise = new Promise(resolve => {
+                    let reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onload = () => resolve(reader.result);
+                }).catch(() => this.displayAlertMessage(this.text["alert_json"]));
+                promises.push(filePromise);
             }
-            this.mergeJsons();
-        });
+            Promise.all(promises).then((contents) => {
+                for(let c of contents)
+                {
+                    this.jsonFiles.push(JSON.parse(c as any))
+                }
+                this.mergeJsons();
+            }).catch((error) =>
+            {
+                this.displayAlertMessage(this.text["alert_json"])
+            });
+        }
+        catch (exception){
+            this.displayAlertMessage(this.text["alert_json"]);
+
+        }
     }
 
     mergeJsons()

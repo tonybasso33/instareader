@@ -1,20 +1,28 @@
 <div class="main">
     <div class="front h-100">
-
+        
         <app-header></app-header>
         <div class="entries h-100">
             <div class="container h-100">
+                <div *ngIf="isMobile" class="alert alert-warning alert-dismissible fade show" role="alertW">
+                    {{text["phone_warning"]}}  
+                <button type="button" class="btn-close my-auto" data-bs-dismiss="alertW" aria-label="Close"  (click)="hideWarningMessage()"></button>
+                  </div>
+                  <div *ngIf="displayAlert" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{alerts}}  
+                    <button type="button" class="btn-close my-auto" data-bs-dismiss="alert" aria-label="Close" (click)="hideAlertMessage()"></button>
+                  </div>
+                  
                 <div class="row h-100 align-items-center">
                     <div class="col">
-
                         <div class="row justify-content-center">
                             <div class="col ">
                                 <div class="d-flex panel info">
                                     <div class="col-3 my-auto text-center">
-                                        <h2 class="display-2">1.</h2>
+                                        <h2 class="display-1 n1">1</h2>
                                     </div>
                                     <div class="col-9 justify-content-center align-self-center lead">
-                                        <p>{{text["entries_1_text"]}} <a href="https://www.instagram.com/download/request/" target="_blank">Instagram</a></p>
+                                        {{text["entries_1_text"]}} <a href="https://www.instagram.com/download/request/" target="_blank">Instagram</a>
                                     </div>
                                 </div>
                             </div>
@@ -24,12 +32,12 @@
                             <div class="col">
                                 <div class="d-flex panel upload">
                                     <div class="col-3 my-auto text-center">
-                                        <h2 class="display-2">2.</h2>
+                                        <h2 class="display-1 n2">2</h2>
                                     </div>
                                     <div class="col-7 justify-content-center">
                                         <div class="form-group">
                                             <label class="labelFor lead" for="upload">{{text["entries_2_text"]}}</label>
-                                            <input type="file" class="form-control my-1" id="upload" multiple  (change)="setJson($event)">
+                                            <input type="file" class="form-control my-1" id="upload" multiple accept="application/json" (change)="setJson($event)">
                                             
                                             <small class="form-text text-muted text-break">
                                                 {{text["entries_2_help"]}}
@@ -44,7 +52,7 @@
                             <div class="col">
                                 <div class="d-flex panel filters">
                                     <div class="col-3 my-auto text-center">
-                                        <h2 class="display-2">3.</h2>
+                                        <h2 class="display-1 n3">3</h2>
                                     </div>
 
                                     <div class="col-7 justify-content-center">
