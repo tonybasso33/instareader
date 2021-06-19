@@ -18,8 +18,9 @@ export class MainComponent implements OnInit, OnDestroy {
     results = [] as any;
     
     uploaded = false;
-    jsonFile = [];
-    
+    jsonFiles = [] as any;
+    finalJson = [] as any;
+
     filtersInput = "";
     
     filters= [] as string[];
@@ -102,9 +103,10 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     doParsing() {
-        this.reset();
         this.setFilters()
-        let { messages, participants } = JSON.parse(fix(JSON.stringify(this.jsonFile)));
+        console.warn(this.finalJson);
+        console.error(this.jsonFiles);
+        let { messages, participants } = JSON.parse(fix(JSON.stringify(this.finalJson)));
 
         //add users
         for (let index of Object.keys(participants)) {
@@ -243,17 +245,53 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     setJson(event: any) {
-        this.jsonFile = [];
-        let jsonFile = event.target.files[0];
-        const fileReader = new FileReader();
-        fileReader.readAsText(jsonFile, "UTF-8");
-        fileReader.onload = () => {
-            this.jsonFile = [];
-            this.reset();
-            this.jsonFile = JSON.parse(fileReader.result as any);
+        this.jsonFiles = [];
+        this.reset();
+        let files = event.target.files;
+        
+        let promises = [];
+        for (let file of files) {
+            let filePromise = new Promise(resolve => {
+                let reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = () => resolve(reader.result);
+            });
+            promises.push(filePromise);
         }
-        fileReader.onerror = (error) => {
-            console.log(error);
+        Promise.all(promises).then((contents) => {
+            for(let c of contents)
+            {
+                this.jsonFiles.push(JSON.parse(c as any))
+            }
+            this.mergeJsons();
+        });
+    }
+
+    mergeJsons()
+    {
+        this.finalJson = {"participants": [], "messages": []} as any;
+
+        console.error(this.jsonFiles)
+        console.warn(this.jsonFiles[0])
+        for(let i=0; i<this.jsonFiles.length;i++) 
+        {
+            let json = this.jsonFiles[i] as any;
+            console.log("xd")
+            console.log(json)
+            ///add participants
+            for(let p of json.participants)
+            {
+                if(this.finalJson[p] === 'undefined')
+                    this.finalJson.participants.push(p);
+            }
+            this.finalJson.participants = json.participants;
+
+            //add messages
+            for(let m of json.messages)
+            {
+                this.finalJson.messages.push(m);
+            }
         }
     }
+
 }
