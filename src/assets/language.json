@@ -9,7 +9,8 @@
       "entries_3_placeholder": "Une expression d'exemple;mot;encore;des;mots:etc...",
       "button_go": "GO",
       "results_title": "Résultats",
-      "results_filters": "Filtres"
+      "results_filters": "Filtres",
+      "footer_author": "DÉVELOPPÉ PAR TONY BASSO"
     },
     "english": {
       "header_author": "BY TONY BASSO",
@@ -21,6 +22,7 @@
       "entries_3_placeholder": "An expression as example;a;word;and;another;word;etc...",
       "button_go": "GO",
       "results_title": "Results",
-      "results_filters": "Filters"
+      "results_filters": "Filters",
+      "footer_author": "MADE BY TONY BASSO"
     }
   }

@@ -2,10 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { Word } from 'src/app/models/word';
 import * as globals from '../../../globals';
-//import { this.words, this.expressions } from '../../../assets/js/filters';
 import fix from '../../../assets/js/encodeFix';
 import { TranslationService } from '../../services/translation.service';
-import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-main',
@@ -51,16 +49,30 @@ export class MainComponent implements OnInit, OnDestroy {
     }
 
     getFilters() {
-        this.filters = this.filtersInput.split(";");
+        let fInput = this.filtersInput.toLowerCase().split(";");
 
-        for (let filter of this.filters) {
+        for (let filter of fInput) {
             let f = filter.split(" ");
-            if (f.length > 2)
-                this.expressions.push(filter);
-            else
-                this.words.push(filter);
+                if (f.length > 2) 
+                {
+                    if(!this.expressions.includes(filter))
+                    {
+                        this.expressions.push(filter);
+                        this.filters.push(filter);
+                    }
+                }
+                else
+                {
+                    if(!this.words.includes(filter))
+                    {
+                        this.filters.push(filter);
+                        this.words.push(filter);
+                    }
+                }
+
         }
     }
+
     sortFiltersObject(filters: any) {
         return filters.sort(function (a: Word, b: Word) {
             let textA = a.name.toUpperCase();
@@ -150,7 +162,7 @@ export class MainComponent implements OnInit, OnDestroy {
             }
 
             totalMessages += user.total;
-            console.log(`\nTotal this.words found: ${total}`);
+            console.log(`\nTotal words found: ${total}`);
             console.log(`Total messages: ${user.total}`);
             console.log("----------------");
         }

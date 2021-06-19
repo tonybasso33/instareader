@@ -1,0 +1,22 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-color: rgba(0, 0, 0, 0.05);
+
+    span{
+        color: rgb(65, 65, 65)!important;
+    }
+
+    img{
+        width: 30px;
+        transition: 0.1s;
+
+        &:hover{
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+    }
+}

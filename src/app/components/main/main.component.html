@@ -71,36 +71,38 @@
         
         
             
-                <div class="results" id="results">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                <h1 class="display-2">{{text["results_title"]}}</h1>
-                            </div>
-                        </div>
-                        <div class="row results-container">
-                            <div class="col-3 words">
-                                <div class="row header align-items-center"><div class="col text-center"><h1>{{text["results_filters"]}}</h1></div></div>
-                                <div class="row line text-center align-items-center" *ngFor="let filter of sortFiltersArray(filters)">
-                                    <hr *ngIf="filter != sortFiltersArray(filters)[0]">
-                                    <div class="col">
-                                        {{filter}}
-                                    </div>
-                                </div>
-                                <div class="row footer"> </div>
-
-                            </div>
-                            <div class="col counts" *ngFor="let user of results">
-                                <div class="row header text-center"><div class="col"><h1>{{user.name}}</h1></div></div>
-                                <div class="row counts line text-center align-items-center"  *ngFor="let word of sortFiltersObject(user.words)">
-                                    <hr *ngIf="word != sortFiltersObject(user.words)[0]">
-                                    <div class="col">
-                                        {{word.count}}
-                                    </div>
-                                </div>
-                                <div class="row footer"> </div>
-                            </div>
+    <div class="results" id="results">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1 class="display-2">{{text["results_title"]}}</h1>
+                </div>
+            </div>
+            <div class="row results-container">
+                <div class="col-3 words">
+                    <div class="row header align-items-center"><div class="col text-center"><h1>{{text["results_filters"]}}</h1></div></div>
+                    <div class="row line text-center align-items-center" *ngFor="let filter of sortFiltersArray(filters)">
+                        <hr *ngIf="filter != sortFiltersArray(filters)[0]">
+                        <div class="col">
+                            {{filter}}
                         </div>
                     </div>
+                    <div class="row footer"> </div>
+
                 </div>
+                <div class="col counts" *ngFor="let user of results">
+                    <div class="row header text-center"><div class="col"><h1>{{user.name}}</h1></div></div>
+                    <div class="row counts line text-center align-items-center"  *ngFor="let word of sortFiltersObject(user.words)">
+                        <hr *ngIf="word != sortFiltersObject(user.words)[0]">
+                        <div class="col">
+                            {{word.count}}
+                        </div>
+                    </div>
+                    <div class="row footer"> </div>
+                </div>
+            </div>
+        </div>
+        <app-footer></app-footer>
+    </div>
+
 </div>
