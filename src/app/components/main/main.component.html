@@ -113,7 +113,24 @@
                 </div>
             </div>
         </div>
+        <div class="messages">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="display-2">Messages</h1>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let message of messages">
+                    <div class="col-auto align-self-right msg" [ngClass]="{'align-self-right': message.author === messages[0].author}">
+                        <span class="author">{{message.author}} </span> <small> {{message.getFormattedTimestamp()}}</small><br/>
+                        <span class="message">{{message.content}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <app-footer></app-footer>
     </div>
+
+    
 
 </div>

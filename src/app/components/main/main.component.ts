@@ -5,6 +5,7 @@ import * as globals from '../../../globals';
 import fix from '../../../assets/js/encodeFix';
 import { TranslationService } from '../../services/translation.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Message } from 'src/app/models/message';
 
 
 @Component({
@@ -36,6 +37,8 @@ export class MainComponent implements OnInit, OnDestroy {
     expressions = [] as string[];
     
     itemCounter = 0;
+
+    messages = Array<Message>();
 
     constructor(private language: TranslationService, private deviceService: DeviceDetectorService) {
         this.isMobile = this.deviceService.isMobile();
@@ -120,6 +123,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     doParsing() 
     {
+        const regex = /(^|\s+)word(?=\s+|$)/g;
         this.reset();
         this.setFilters()
         if(this.jsonFiles.length > 0 && this.filters.length > 0)
@@ -138,12 +142,24 @@ export class MainComponent implements OnInit, OnDestroy {
             for (let index of Object.keys(messages)) {
                 let m = messages[index];
                 if (m.content) {
+                    console.log(m.content);
+
+                    //register message
+                    let userMessage = new Message(m.content, m.sender_name, m.timestamp_ms);
+                    this.messages.push(userMessage);    
+
+                    for(let user of this.results)
+                    {
+                        if(user.name == m.sender_name)
+                        {
+                            user.messages.push(userMessage);
+                        }
+                    }
 
                     //count words
                     let message = m.content.toLowerCase();
                     let mWords = message.split(' ');
                     mWords = mWords.filter(function (e: any) { return e != "";});
-
 
                     for (let w of this.words) {
                         for (let mWord of mWords) {
@@ -168,6 +184,13 @@ export class MainComponent implements OnInit, OnDestroy {
                 this.itemCounter++;
             }
 
+
+            this.messages = this.messages.sort((a, b) => {
+                if(a.timestamp>b.timestamp) 
+                    return 1
+                else
+                    return -1
+            });
             this.addZeros();
             this.display();
             
@@ -239,6 +262,7 @@ export class MainComponent implements OnInit, OnDestroy {
         this.uploaded = true;
 
         document.getElementById("results")!.style.display = 'block';
+
         this.scrollToResults();
 
     }

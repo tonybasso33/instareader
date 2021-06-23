@@ -1,7 +1,7 @@
 {
     "french": {
       "header_author": "PAR TONY BASSO",
-      "entries_1_text": "Téléchargez vos données personnelles depuis",
+      "entries_1_text": "Téléchargez vos données personnelles (format JSON) depuis",
       "entries_2_text": "Choisissez un ou plusieurs fichier(s)",
       "entries_2_help": "Exemple: messages/inbox/name_xxxxxx/message_1.json",
       "entries_3_text": "Écrivez les mots ou expressions que vous voulez filtrer",
@@ -18,7 +18,7 @@
     },
     "english": {
       "header_author": "BY TONY BASSO",
-      "entries_1_text": "Download you personal data from",
+      "entries_1_text": "Download you personal data (JSON format) from",
       "entries_2_text": "Choose your file(s)",
       "entries_2_help": "Example: messages/inbox/name_xxxxxx/message_1.json",
       "entries_3_text": "Write down words or expressions you want to filter",
