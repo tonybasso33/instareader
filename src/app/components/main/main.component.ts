@@ -37,6 +37,7 @@ export class MainComponent implements OnInit, OnDestroy {
     expressions = [] as string[];
     
     itemCounter = 0;
+    totalMessages = 0;
 
     messages = Array<Message>();
 
@@ -134,7 +135,7 @@ export class MainComponent implements OnInit, OnDestroy {
             //add users
             for (let index of Object.keys(participants)) {
                 let p = participants[index];
-                let user = new User(p.name, [], 0);
+                let user = new User(p.name, [], []);
                 this.results.push(user);
             }
 
@@ -142,7 +143,7 @@ export class MainComponent implements OnInit, OnDestroy {
             for (let index of Object.keys(messages)) {
                 let m = messages[index];
                 if (m.content) {
-                    console.log(m.content);
+
 
                     //register message
                     let userMessage = new Message(m.content, m.sender_name, m.timestamp_ms);
@@ -238,26 +239,24 @@ export class MainComponent implements OnInit, OnDestroy {
      * 
      */
     display() {
-        let totalMessages = 0.
         for (let user of this.results) {
-            let total = 0;
+            let totalWords = 0;
             console.log("\n----------------");
             console.log(user.name);
             console.log("----------------");
             if (user.words.length > 0) {
                 for (let word of user.words) {
                     console.log(`${word.name}: ${word.count}`);
-                    total += word.count;
+                    totalWords += word.count;
                 }
             }
-
-            totalMessages += user.total;
-            console.log(`\nTotal words found: ${total}`);
+            
+            console.log(`\nTotal words found: ${totalWords}`);
             console.log(`Total messages: ${user.total}`);
             console.log("----------------");
         }
 
-        console.log(`\n| Total messages: ${totalMessages}`);
+        console.log(`\n| Total messages: ${this.totalMessages}`);
         console.log(`| Total items: ${this.itemCounter}\n`);
         this.uploaded = true;
 
@@ -322,6 +321,16 @@ export class MainComponent implements OnInit, OnDestroy {
 
             }
         }
+    }
+
+    getTotalMessages()
+    {
+        let total = 0;
+        for(let user of this.results)
+        {
+            total += user.getTotalMessages();
+        }
+        return total;
     }
 
     setJson(event: any) {

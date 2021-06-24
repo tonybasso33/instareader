@@ -18,7 +18,7 @@
     },
     "english": {
       "header_author": "BY TONY BASSO",
-      "entries_1_text": "Download you personal data (JSON format) from",
+      "entries_1_text": "Download your personal data (JSON format) from",
       "entries_2_text": "Choose your file(s)",
       "entries_2_help": "Example: messages/inbox/name_xxxxxx/message_1.json",
       "entries_3_text": "Write down words or expressions you want to filter",
